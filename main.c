@@ -2,14 +2,7 @@
 #include "funciones.h"
 
 int main() {
-    char clientes[5][2][40] = {
-        {"Juan", "1789654123"},
-        {"", ""},
-        {"", ""},
-        {"", ""},
-        {"", ""}
-    };
-
+    char clientes[5][2][40] = {{"", ""}};
     char habitaciones[9][3][40] = {
         {"1", "simple", "Dan_Carlton"},
         {"2", "doble", "Dan_Carlton"},
@@ -21,9 +14,7 @@ int main() {
         {"8", "doble", "Sheraton"},
         {"9", "triple", "Sheraton"}
     };
-
     double precios[9] = {90, 120, 160, 65, 100, 140, 85, 110, 150};
-
     int reservas[10][4] = {
         {-1, -1, -1, 0},
         {-1, -1, -1, 0},
@@ -37,7 +28,11 @@ int main() {
         {-1, -1, -1, 0}
     };
 
+    leerClientes(clientes, "D:/Documentos/clientes.txt");
+    leerReservas(reservas, "D:/Documentos/clientes.txt");
+
     int opcion, numHabitacion, numReserva;
+
     do {
         printf("\nEscoja una opcion:\n1. Buscar Habitacion\n2. Realizar reserva\n3. Ver reservas\n4. Pagar Reserva\n>> ");
         scanf("%d", &opcion);
@@ -53,11 +48,14 @@ int main() {
                         buscarHotel(&numHabitacion, habitaciones, precios);
                         break;
                     default:
+                        printf("Opcion invalida.\n");
                         break;
                 }
                 break;
             case 2:
                 realizarReserva(numHabitacion, habitaciones, clientes, reservas);
+                guardarClientes(clientes, "clientes.txt");
+                guardarReservas(reservas, "reservas.txt");
                 break;
             case 3:
                 buscarReservaPorCedula(&numReserva, clientes, reservas);
@@ -65,13 +63,14 @@ int main() {
                 break;
             case 4:
                 buscarReservaPorCedula(&numReserva, clientes, reservas);
-                pagarReserva(numReserva,reservas,habitaciones,precios);
+                pagarReserva(numReserva, reservas, habitaciones, precios);
+                guardarReservas(reservas, "reservas.txt");
                 break;
             default:
+                printf("Opcion invalida.\n");
                 break;
-
         }
-        printf("Desea elegir otra opcion\n1.Si\n2.No\n>>");
+        printf("Desea elegir otra opcion\n1.Si\n2.No\n>> ");
         scanf("%d", &opcion);
     } while (opcion == 1);
 

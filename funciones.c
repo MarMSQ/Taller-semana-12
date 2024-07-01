@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "funciones.h"
 #include <string.h>
+#include "funciones.h"
 
 void buscarPorTamano(int *numHabitacion, char habitaciones[][3][40], double precios[]) {
     char tipo[40];
@@ -105,8 +105,66 @@ void pagarReserva(int numReserva, int reservas[][4], char habitaciones[][3][40],
         } else {
             reservas[numReserva][3] = 1; 
             printf("Reserva %d pagada.\n", numReserva+1);
+            guardarReservas(reservas, "D:/Documentos/reservas.txt");
         }
     } else {
         printf("Reserva no encontrada.\n");
     }
+}
+
+void leerClientes(char clientes[][2][40], const char *filename) {
+    FILE *file = fopen("D:/Documentos/clientes.txt", "r");
+    if (!file) {
+        printf("No se pudo abrir el archivo %s\n", filename);
+        FILE *file = fopen("D:/Documentos/clientes.txt", "w");
+        return;
+    }
+    for (int i = 0; i < 5; i++) {
+        if (fscanf(file, "%s %s", clientes[i][0], clientes[i][1]) != 2) {
+            break;
+        }
+    }
+    fclose(file);
+}
+
+void leerReservas(int reservas[][4], const char *filename) {
+    FILE *file = fopen("D:/Documentos/reservas.txt", "r");
+    if (!file) {
+        printf("No se pudo abrir el archivo %s\n", filename);
+        FILE *file = fopen("D:/Documentos/reservas.txt", "w");
+        return;
+    }
+    for (int i = 0; i < 10; i++) {
+        if (fscanf(file, "%d %d %d %d", &reservas[i][0], &reservas[i][1], &reservas[i][2], &reservas[i][3]) != 4) {
+            break;
+        }
+    }
+    
+    fclose(file);
+}
+
+void guardarClientes(char clientes[][2][40], const char *filename) {
+    FILE *file = fopen("D:/Documentos/clientes.txt", "w");
+    if (!file) {
+        printf("No se pudo abrir el archivo %s\n", filename);
+        return;
+    }
+    for (int i = 0; i < 5; i++) {
+        if (clientes[i][0][0] != '\0') {
+            fprintf(file, "%s %s\n", clientes[i][0], clientes[i][1]);
+        }
+    }
+    fclose(file);
+}
+
+void guardarReservas(int reservas[][4], const char *filename) {
+    FILE *file = fopen("D:/Documentos/reservas.txt", "w");
+    if (!file) {
+        printf("No se pudo abrir el archivo %s\n", filename);
+        return;
+    }
+    for (int i = 0; i < 10; i++) {
+        fprintf(file, "%d %d %d %d\n", reservas[i][0], reservas[i][1], reservas[i][2], reservas[i][3]);
+    }
+    fclose(file);
 }
